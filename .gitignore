@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# OS / editor
+desktop.ini
+.DS_Store
+.vscode/
+
+# Large source PDFs — too big for git; document their source in the README instead
+*.pdf
+
+# Real input datasets — author's own work, NOT for public redistribution.
+# A small sampled subset lives in sample_data/ so the pipeline stays runnable.
+data/
+
+# Exclude ALL CSVs by default (the full datasets live loose in the repo root)...
+*.csv
+# ...but DO allow the small committed sample so the repo runs out-of-the-box.
+!sample_data/
+!sample_data/*.csv
+
+# Generated pipeline outputs (reproducible from inputs)
+output/
+
+# Unrelated work that happens to share this folder
+HPE*
+*Supplier*
+LeetCode-DSA.ipynb
+Untitled.ipynb
+Hewlett*
+
+# Notebooks live in notebooks/ — ignore the loose root copies (duplicates)
+/*.ipynb
+
+# GEE scripts live in gee_scripts/*.js — ignore the loose root .txt originals
+/*.txt

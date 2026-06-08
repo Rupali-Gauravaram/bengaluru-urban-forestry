@@ -1,0 +1,33 @@
+# Keep the build context small and the image clean.
+# Only src/, main.py, and requirements.txt should reach the build.
+
+# Notebooks (kept in repo as EDA/documentation, not run in the image)
+*.ipynb
+notebooks/
+.ipynb_checkpoints/
+
+# Large source PDFs — mounted at runtime via -v if Stage 1 is needed,
+# never baked into the image.
+*.pdf
+
+# Data and outputs are mounted at run time, not copied in.
+data/
+output/
+*.csv
+
+# Unrelated work that happens to live in this folder
+HPE*
+*Supplier*
+LeetCode*
+Untitled*
+
+# Python / OS cruft
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+desktop.ini
+.git/
+.github/
+*.md
