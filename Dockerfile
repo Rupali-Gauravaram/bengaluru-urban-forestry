@@ -57,11 +57,16 @@ WORKDIR /app
 COPY src/ ./src/
 COPY main.py ./
 
-# Default data/output locations inside the container (mount real data over these).
-ENV DATA_DIR=/app/data \
-    OUTPUT_DIR=/app/output \
+# Ship the small public sample so `docker run <image>` works out-of-the-box.
+# (The author's full private dataset is mounted over /app/data at run time.)
+COPY sample_data/ ./sample_data/
+
+# OUTPUT_DIR is fixed; DATA_DIR is intentionally NOT set here so config.py's
+# fallback applies: an explicit -e DATA_DIR or a mount wins, otherwise the code
+# uses the bundled sample_data/.
+ENV OUTPUT_DIR=/app/output \
     PYTHONUNBUFFERED=1
-RUN mkdir -p /app/data /app/output && chown -R appuser:appuser /app
+RUN mkdir -p /app/output && chown -R appuser:appuser /app
 
 USER appuser
 

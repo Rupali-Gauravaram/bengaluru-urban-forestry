@@ -14,6 +14,9 @@ notebooks/
 data/
 output/
 *.csv
+# ...but DO ship the small public sample so the image is self-runnable.
+!sample_data/
+!sample_data/*.csv
 
 # Unrelated work that happens to live in this folder
 HPE*
