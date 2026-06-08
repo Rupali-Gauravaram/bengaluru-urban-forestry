@@ -1,0 +1,10 @@
+# Runtime dependencies for the batch pipeline (src/ + main.py).
+# Pinned to the versions used during development for reproducible builds.
+pandas==2.3.1
+numpy==2.3.2
+scikit-learn==1.7.2
+pdfplumber==0.11.9
+shapely==2.1.2
+
+# matplotlib==3.10.6 and seaborn==0.13.2 are used only by the EDA notebook,
+# not the batch pipeline, so they are intentionally excluded from the image.

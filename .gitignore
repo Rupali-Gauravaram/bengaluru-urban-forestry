@@ -40,3 +40,5 @@ Hewlett*
 
 # GEE scripts live in gee_scripts/*.js — ignore the loose root .txt originals
 /*.txt
+# ...but requirements.txt is a real project file, keep it.
+!requirements.txt
