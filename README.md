@@ -130,7 +130,35 @@ its input directory automatically: `DATA_DIR` env var → `data/` (if present) �
 
 ---
 
-## Running with Docker
+## Quick start — run the published image (no setup)
+
+The CI pipeline publishes a ready-to-run image to the GitHub Container Registry.
+With Docker installed, one command runs the whole pipeline on the bundled
+28-ward sample — no clone, no Python, no dependency install:
+
+```bash
+docker run --rm ghcr.io/rupali-gauravaram/bengaluru-urban-forestry:main
+```
+
+Run a single stage by appending its name:
+
+```bash
+docker run --rm ghcr.io/rupali-gauravaram/bengaluru-urban-forestry:main ward_health
+```
+
+To run on your own data (and get the output CSVs back on your machine), mount
+both directories over the defaults:
+
+```bash
+docker run --rm \
+  -v "$(pwd)/data:/app/data" \
+  -v "$(pwd)/output:/app/output" \
+  ghcr.io/rupali-gauravaram/bengaluru-urban-forestry:main
+```
+
+---
+
+## Running with Docker (build it yourself)
 
 ### Build
 
