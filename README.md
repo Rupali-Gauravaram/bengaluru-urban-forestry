@@ -8,6 +8,46 @@ heat-stress neighbourhoods.
 The analysis began as exploratory Jupyter notebooks (kept in
 [`notebooks/`](notebooks/) as documentation) and was refactored into a modular,
 production-style Python pipeline that runs identically on any machine via Docker.
+A small read-only **REST API** serves the pipeline's results.
+
+---
+
+## Live API
+
+The ward rankings are served by a FastAPI application deployed on Render:
+
+**https://bengaluru-urban-forestry.onrender.com**
+
+Interactive documentation (Swagger UI, generated from the code's type hints —
+every endpoint is callable from the browser):
+
+**https://bengaluru-urban-forestry.onrender.com/docs**
+
+| Endpoint | Returns |
+|----------|---------|
+| `GET /health` | liveness probe — `{"status": "ok"}` |
+| `GET /wards` | all 198 wards with scores and rankings |
+| `GET /wards/{ward_name}` | one ward (case-insensitive; `404` if unknown) |
+| `GET /wards/rankings/top?n=` | the *n* healthiest wards (`n` bounded 1–50) |
+| `GET /zones` | per-zone ward count and mean health score |
+
+> **Note on cold starts.** The API runs on Render's free tier, which spins the
+> instance down after ~15 minutes of inactivity. The first request after an idle
+> period takes **30–50 seconds** while the service wakes; subsequent requests are
+> immediate. It is not broken — just asleep.
+
+The API is deliberately **read-only**: it serves
+`output/Bengaluru_Ward_Master_Stats.csv`, which the pipeline produces. Analysis
+happens in the pipeline, not in the request path, so the API stays fast and the
+scoring logic lives in exactly one place. The CSV is read once at import rather
+than per request.
+
+Run it locally with:
+
+```bash
+pip install -r requirements.txt
+uvicorn api.main:app --reload      # http://localhost:8000/docs
+```
 
 ---
 
@@ -97,6 +137,10 @@ separates wards in the physically expected direction.
 │   ├── extract_trees.py   # Stage 1
 │   ├── ward_health.py     # Stage 2
 │   └── pocket_forests.py  # Stage 3
+├── api/
+│   └── main.py            # FastAPI app — read-only view over Stage 2 output
+├── tests/
+│   └── test_api.py        # pytest suite (normal / edge / error cases)
 ├── main.py                # orchestrator (run all stages, or one by name)
 ├── notebooks/             # original EDA notebooks (documentation)
 ├── data/                  # input CSVs / PDFs (mounted at run time)
@@ -208,6 +252,14 @@ docker run --rm `
   filename mismatch that would otherwise crash the pipeline inside a container.
 - **CI/CD.** Every push builds the image; pushes to `main` and version tags
   publish it to the GitHub Container Registry.
+- **Tests.** [`tests/test_api.py`](tests/test_api.py) covers the three cases that
+  matter: the normal path, the edges (`n` outside 1–50 is rejected with `422`;
+  top-*n* comes back in rank order), and the errors (`404` for an unknown ward).
+  Two are **regression tests** for bugs found while building the API — the zone
+  column carried trailing whitespace and two spellings of one zone, grouping into
+  9 zones instead of 8; and the ward lookup lowercased the stored column but not
+  the caller's input, so only lowercase names resolved. Both are now asserted
+  rather than assumed. Run with `pytest`.
 
 ---
 

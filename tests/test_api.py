@@ -65,6 +65,28 @@ def test_unreal_wards_404():
     assert response.status_code == 404
     assert response.json()['detail'] == "Ward not found"
 
+def test_ward_lookup_is_case_insensitive():
+    '''This is a regression test to ensure that the lookup is not case-sensitive. the guard once lowercased the column 
+    but not the input, so only lowercase names resolved and Halsoor returned 404.'''
+
+    # Act
+    response1 = client.get("/wards/Halsoor")
+    response2 = client.get("/wards/halsoor")
+    response3 = client.get("/wards/HALSOOR")
+
+    # Assert
+    assert response1.status_code == 200
+    assert response1.json()['Ward_Name'] == 'Halsoor'
+
+    assert response2.status_code == 200
+    assert response2.json()['Ward_Name'] == 'Halsoor'
+
+    assert response3.status_code == 200
+
+
+
+
+
     
 
     
