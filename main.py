@@ -13,7 +13,6 @@ Usage:
     python -m src.ward_health     # equivalently, run a stage module directly
 """
 import sys
-
 from src import config, extract_trees, ward_health, pocket_forests
 
 STAGES = {

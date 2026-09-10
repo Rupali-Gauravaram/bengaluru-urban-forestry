@@ -7,38 +7,26 @@ venv/
 .pytest_cache/
 .ipynb_checkpoints/
 
-# OS / editor
+# OS / editor / local tooling
 desktop.ini
 .DS_Store
 .vscode/
+.claude/
 
-# Large source PDFs — too big for git; document their source in the README instead
+# Large source PDFs — too big for git; their source is documented in the README.
 *.pdf
 
 # Real input datasets — author's own work, NOT for public redistribution.
 # A small sampled subset lives in sample_data/ so the pipeline stays runnable.
 data/
 
-# Exclude ALL CSVs by default (the full datasets live loose in the repo root)...
+# Exclude data CSVs by default...
 *.csv
-# ...but DO allow the small committed sample so the repo runs out-of-the-box.
+# ...but DO commit the small public sample, so the repo runs out of the box.
 !sample_data/
 !sample_data/*.csv
 
-# Generated pipeline outputs (reproducible from inputs)
+# Generated pipeline outputs (reproducible by running main.py)...
 output/
-
-# Unrelated work that happens to share this folder
-HPE*
-*Supplier*
-LeetCode-DSA.ipynb
-Untitled.ipynb
-Hewlett*
-
-# Notebooks live in notebooks/ — ignore the loose root copies (duplicates)
-/*.ipynb
-
-# GEE scripts live in gee_scripts/*.js — ignore the loose root .txt originals
-/*.txt
-# ...but requirements.txt is a real project file, keep it.
-!requirements.txt
+# ...except the ward master stats, which the API reads at startup.
+!output/Bengaluru_Ward_Master_Stats.csv

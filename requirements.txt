@@ -5,6 +5,9 @@ numpy==2.3.2
 scikit-learn==1.7.2
 pdfplumber==0.11.9
 shapely==2.1.2
+fastapi==0.141.1
+uvicorn==0.52.4
+pydantic==2.13.5
 
 # matplotlib==3.10.6 and seaborn==0.13.2 are used only by the EDA notebook,
 # not the batch pipeline, so they are intentionally excluded from the image.

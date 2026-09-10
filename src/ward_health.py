@@ -7,10 +7,8 @@ ranks every ward (rank 1 = healthiest). Also extracts lat/long from the GEE
 `.geo` column of the LULC points file.
 """
 import json
-
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-
 from . import config
 
 
@@ -64,8 +62,15 @@ def _merge_ward_stats() -> pd.DataFrame:
     master_df = frames["surface_temp"]
     for col in ("urban_index", "veg_index", "water_index"):
         master_df = master_df.merge(frames[col], on="Ward_Name", how="inner")
-    return master_df
 
+    # Cleaning 'Zone' column to remove leading/trailing whitespace and spelling discripencies
+    master_df['Zone'] = master_df['Zone'].str.strip()
+    master_df['Zone'] = master_df['Zone'].replace('Rajarajeswari Nagar', 'Rajarajeshwari Nagar')
+
+    if master_df["Zone"].nunique() != 8:
+        print(f"[ward_health] WARNING: expected 8 zones, found {master_df['Zone'].nunique()}")
+
+    return master_df
 
 def consolidate_ward_data() -> pd.DataFrame:
     """Merge ward stats and compute the Environmental Health Score + ranking.
