@@ -37,9 +37,10 @@ def top_n_wards(n: int = Query(default=10, ge=1, le=50)):
 
 @app.get("/wards/{ward_name}", response_model=Ward)
 def get_ward_name(ward_name: str):
-    if ward_name not in df['Ward_Name'].str.lower().values:
+    match = df[df['Ward_Name'].str.lower() == ward_name.lower()]
+    if match.empty:
         raise HTTPException(status_code=404, detail="Ward not found")
-    return df[df['Ward_Name'].str.lower() == ward_name.lower()].to_dict(orient="records")[0]
+    return match.to_dict(orient="records")[0]
 
 @app.get("/zones", response_model=list[Zone])
 def get_zones():
