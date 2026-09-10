@@ -1,9 +1,9 @@
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
+from src import config
 
-csv_path = r"D:\PROJECTS\Bengaluru Urban Forestry\output\Bengaluru_Ward_Master_Stats.csv"
-df = pd.read_csv(csv_path)
+df = pd.read_csv(config.OUT_WARD_MASTER)
 
 class Ward(BaseModel):
     Ward_Name: str
