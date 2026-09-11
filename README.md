@@ -2,7 +2,7 @@
 
 A reproducible, containerised data pipeline that scores and ranks Bengaluru's
 198 wards by environmental health and identifies candidate sites for "pocket
-forests" — small, dense urban tree plantations targeted at the city's worst
+forests": small, dense urban tree plantations targeted at the city's worst
 heat-stress neighbourhoods.
 
 The analysis began as exploratory Jupyter notebooks (kept in
@@ -31,10 +31,9 @@ every endpoint is callable from the browser):
 | `GET /wards/rankings/top?n=` | the *n* healthiest wards (`n` bounded 1–50) |
 | `GET /zones` | per-zone ward count and mean health score |
 
-> **Note on cold starts.** The API runs on Render's free tier, which spins the
-> instance down after ~15 minutes of inactivity. The first request after an idle
+> **Note on cold starts.** The API runs on Render's free tier, the first request after an idle
 > period takes **30–50 seconds** while the service wakes; subsequent requests are
-> immediate. It is not broken — just asleep.
+> immediate. 
 
 The API is deliberately **read-only**: it serves
 `output/Bengaluru_Ward_Master_Stats.csv`, which the pipeline produces. Analysis
@@ -174,7 +173,7 @@ its input directory automatically: `DATA_DIR` env var → `data/` (if present) �
 
 ---
 
-## Quick start — run the published image (no setup)
+## Quick start — run the published image 
 
 The CI pipeline publishes a ready-to-run image to the GitHub Container Registry.
 With Docker installed, one command runs the whole pipeline on the bundled
@@ -202,7 +201,7 @@ docker run --rm \
 
 ---
 
-## Running with Docker (build it yourself)
+## Running with Docker
 
 ### Build
 
